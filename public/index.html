@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Analyzer | AI-Powered Truth</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    
+    <!-- Dynamic Background -->
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Navigation -->
+    <nav class="glass-nav">
+        <div class="logo">
+            <i class="fa-solid fa-layer-group"></i> News<span class="highlight">Analyzer</span>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#hero" class="active">Home</a></li>
+            <li><a href="#live-news">Live Feed</a></li>
+            <li><a href="#verification">AI Verify</a></li>
+            <li><a href="#citizen-portal">Citizen Reports</a></li>
+        </ul>
+        <div class="status-indicator">
+            <span class="dot"></span> System Online
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero-section">
+        <div class="hero-content">
+            <h1 class="glitch-text" data-text="Decode the Noise">Decode the Noise</h1>
+            <p class="subtitle">Advanced AI forensics for the modern information ecosystem. Navigate global events with clarity.</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="count">24/7</span>
+                    <span class="label">Real-time Monitoring</span>
+                </div>
+                <div class="divider"></div>
+                <div class="stat-item">
+                    <span class="count">98%</span>
+                    <span class="label">Accuracy Target</span>
+                </div>
+            </div>
+            <button class="cta-btn" onclick="document.getElementById('verification').scrollIntoView({behavior: 'smooth'})">
+                Start Verification <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </div>
+        <div class="hero-graphic">
+             <!-- Abstract 3D-like element composed of CSS -->
+             <div class="scanner-ui">
+                <div class="scan-line"></div>
+                <div class="data-row"></div>
+                <div class="data-row" style="width: 70%"></div>
+                <div class="data-row" style="width: 50%"></div>
+             </div>
+        </div>
+    </section>
+
+    <!-- Live News Aggregator -->
+    <section id="live-news" class="section-container">
+        <div class="section-header">
+            <h2><i class="fa-solid fa-globe"></i> Global Intel Stream</h2>
+            <div class="source-tags">
+                <span class="tag">The Hindu</span>
+                <span class="tag">Times of India</span>
+                <span class="tag">Hindustan Times</span>
+            </div>
+        </div>
+        
+        <div class="news-grid" id="news-feed-container">
+            <!-- News Cards Injected Here -->
+            <div class="loading-skeleton">
+                <div class="sk-card"></div><div class="sk-card"></div><div class="sk-card"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Verification Module -->
+    <section id="verification" class="section-container highlight-section">
+        <div class="glass-container">
+            <div class="verify-header">
+                <h2><i class="fa-solid fa-microchip"></i> Smart Verify Engine</h2>
+                <p>Paste a headline or claim. Our NLP model will cross-reference credible databases.</p>
+            </div>
+            
+            <div class="input-wrapper">
+                <textarea id="verify-input" placeholder="Ex: 'NASA confirms asteroid collision in 2026...' "></textarea>
+                <div class="input-actions">
+                    <button id="verify-btn" class="glow-btn">
+                        <i class="fa-solid fa-magnifying-glass-chart"></i> Analyze Truth Probability
+                    </button>
+                    <div id="loading-spinner" class="spinner hidden"></div>
+                </div>
+            </div>
+
+            <div id="verify-result" class="result-panel hidden">
+                <div class="score-ring-container">
+                    <svg class="score-ring" width="120" height="120">
+                        <circle class="c-bg" cx="60" cy="60" r="50"></circle>
+                        <circle class="c-progress" cx="60" cy="60" r="50"></circle>
+                    </svg>
+                    <div class="score-text">0%</div>
+                </div>
+                <div class="analysis-details">
+                    <h3 id="verdict-title">Analysis Complete</h3>
+                    <p id="verdict-reasoning">Waiting for input...</p>
+                    <ul class="evidence-list" id="evidence-list"></ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Citizen Journalism Portal -->
+    <section id="citizen-portal" class="section-container">
+        <div class="split-layout">
+            <div class="form-side">
+                <h2><i class="fa-solid fa-pen-nib"></i> Citizen Report</h2>
+                <p>Report local events often ignored by mainstream media. Be the source.</p>
+                <form id="citizen-form">
+                    <div class="form-group">
+                        <input type="text" id="c-name" placeholder="Reporter Name (Optional)">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="c-location" placeholder="Location *">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="c-headline" placeholder="Headline *" required>
+                    </div>
+                    <div class="form-group">
+                        <textarea id="c-content" placeholder="Details of the event..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <input type="url" id="c-image" placeholder="Image URL (Optional)">
+                    </div>
+                    <button type="submit" class="submit-btn">Submit Report</button>
+                </form>
+            </div>
+            <div class="feed-side">
+                <h3>Recent Local Reports</h3>
+                <div class="citizen-feed-track" id="citizen-feed">
+                    <!-- Loaded dynamically -->
+                    <div class="empty-state">No local reports yet.</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 News Analyzer. Empowering Truth.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

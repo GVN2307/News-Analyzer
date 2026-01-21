@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>News Analyzer | The Truth Engine</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@300;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/home.css">
+</head>
+
+<body>
+
+    <!-- Background System -->
+    <div class="bg-matrix"></div>
+    <div class="orb-container">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+
+    <!-- Navigation (Loaded via common.js) -->
+    <nav class="glass-nav" id="main-nav"></nav>
+
+    <!-- Hero Section -->
+    <header class="hero-grand">
+        <div class="hero-text-container">
+            <h1 class="mega-title">
+                <span class="line-1">DECODE</span>
+                <span class="line-2">THE</span>
+                <span class="line-3 glitch" data-text="REALITY">REALITY</span>
+            </h1>
+            <p class="hero-sub">
+                In an era of information warfare, <strong>News Analyzer</strong> is your shield.
+                AI-driven forensics, real-time verified intelligence, and decentralized reporting.
+            </p>
+            <div class="cta-group">
+                <a href="verify.html" class="btn btn-primary btn-glow">
+                    <i class="fa-solid fa-microchip"></i> Launch AI Verify
+                </a>
+                <a href="news.html" class="btn btn-secondary">
+                    <i class="fa-solid fa-globe"></i> Global Intel
+                </a>
+            </div>
+        </div>
+        <div class="hero-visual">
+            <div class="hologram-card">
+                <div class="scan-bar"></div>
+                <div class="data-stream">
+                    <span>Target: Misinformation</span>
+                    <span>Status: Detected</span>
+                    <span>Confidence: 99.9%</span>
+                </div>
+                <i class="fa-solid fa-shield-halved hologram-icon"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Features Dashboard -->
+    <section class="dashboard-preview">
+        <div class="section-title">
+            <h2>System Modules</h2>
+            <div class="line"></div>
+        </div>
+
+        <div class="module-grid">
+            <a href="news.html" class="module-card">
+                <div class="card-icon"><i class="fa-solid fa-newspaper"></i></div>
+                <h3>Live Intel Aggregator</h3>
+                <p>Real-time feeds from The Hindu, TOI, and trusted global sources. Filtered & Clean.</p>
+                <span class="link-arrow">Access <i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+
+            <a href="verify.html" class="module-card featured">
+                <div class="card-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                <h3>Neural Verification</h3>
+                <p>Proprietary LLM-based truth scoring. Cross-references 50M+ data points instantly.</p>
+                <span class="link-arrow">Analyze <i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+
+            <a href="citizen.html" class="module-card">
+                <div class="card-icon"><i class="fa-solid fa-users-viewfinder"></i></div>
+                <h3>Citizen Network</h3>
+                <p>Decentralized reporting. Bypass the gatekeepers and see what's happening on the ground.</p>
+                <span class="link-arrow">Connect <i class="fa-solid fa-arrow-right"></i></span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Live Stats Ticker -->
+    <section class="live-stats">
+        <div class="stat-box">
+            <span class="stat-val" data-target="1540">0</span>
+            <span class="stat-label">Articles Scanned Today</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-val" data-target="89">0</span>
+            <span class="stat-label">% Accuracy Rate</span>
+        </div>
+        <div class="stat-box">
+            <span class="stat-val" data-target="12">0</span>
+            <span class="stat-label">Critical Alerts</span>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 News Analyzer. The Truth Protocol.</p>
+        </div>
+    </footer>
+
+    <script src="js/common.js"></script>
+    <script src="js/home.js"></script>
+</body>
+
+</html>

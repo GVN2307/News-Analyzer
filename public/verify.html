@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>AI Verify Studio | News Analyzer</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&family=Space+Grotesk:wght@500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+    <style>
+        .studio-layout {
+            display: flex;
+            gap: 4rem;
+            padding: 0 5% 4rem;
+            min-height: 70vh;
+        }
+
+        .studio-main {
+            flex: 2;
+        }
+
+        .studio-history {
+            flex: 1;
+            border-left: 1px solid var(--border);
+            padding-left: 2rem;
+        }
+
+        .analysis-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        textarea.verify-input {
+            width: 100%;
+            height: 150px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border);
+            color: #fff;
+            padding: 1rem;
+            font-family: var(--font-body);
+            font-size: 1.1rem;
+            resize: none;
+            border-radius: 8px;
+        }
+
+        textarea.verify-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .result-stage {
+            margin-top: 3rem;
+            display: none;
+        }
+
+        .result-stage.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        .score-display {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .big-score {
+            font-size: 4rem;
+            font-family: var(--font-head);
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .verdict-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+        }
+
+        .history-item {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .history-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media(max-width: 900px) {
+            .studio-layout {
+                flex-direction: column;
+            }
+
+            .studio-history {
+                border-left: none;
+                padding-left: 0;
+                border-top: 1px solid var(--border);
+                padding-top: 2rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-matrix"></div>
+    <nav class="glass-nav" id="main-nav"></nav>
+
+    <div class="page-header">
+        <h2 class="page-title">Verification Studio</h2>
+        <p class="page-subtitle">Paste a headline, tweet, or article snippet. Our NLP Engine determines its credibility.
+        </p>
+    </div>
+
+    <main class="studio-layout">
+        <section class="studio-main">
+            <div class="analysis-box">
+                <textarea id="text-input" class="verify-input"
+                    placeholder="Enter text to analyze... (e.g. 'Government announces new tax on breathable air starting 2026')"></textarea>
+                <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+                    <div id="status-msg" style="color: var(--text-gray); font-size: 0.9rem;">Ready for input</div>
+                    <button class="btn btn-primary btn-glow" id="analyze-btn">
+                        <i class="fa-solid fa-bolt"></i> Analyze Now
+                    </button>
+                </div>
+            </div>
+
+            <div id="result-area" class="result-stage">
+                <div class="score-display">
+                    <div class="ring-wrapper">
+                        <!-- Canvas or SVG ring here if needed, keeping simple text for now -->
+                        <span id="score-val" class="big-score">0%</span>
+                    </div>
+                    <div>
+                        <div id="verdict-label" class="verdict-badge">UNCERTAIN</div>
+                        <p style="margin-top: 0.5rem; color: var(--text-gray);">Truth Probability Score</p>
+                    </div>
+                </div>
+                <div class="analysis-content">
+                    <h3>AI Reasoning</h3>
+                    <p id="reasoning-text" style="line-height: 1.8; color: #ddd;"></p>
+                </div>
+            </div>
+        </section>
+
+        <aside class="studio-history">
+            <h3 style="margin-bottom: 1.5rem; font-family: var(--font-head);">Recent Checks</h3>
+            <div id="history-list">
+                <p style="color: var(--text-gray); font-size: 0.9rem;">No history yet.</p>
+            </div>
+        </aside>
+    </main>
+
+    <script src="js/common.js"></script>
+    <script src="js/verify.js"></script>
+</body>
+
+</html>
