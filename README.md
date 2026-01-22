@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # News Analyzer | AI-Powered Truth Platform
 
 News Analyzer is a comprehensive platform designed to combat misinformation using AI. It features real-time news aggregation from major Indian sources, a decentralized citizen journalism portal, and an advanced AI verification engine.
@@ -57,3 +58,6 @@ News Analyzer is a comprehensive platform designed to combat misinformation usin
    npm start
    # Server runs on http://localhost:3000
    ```
+=======
+# News-Analyzer
+>>>>>>> d5a93bf14ffb442c1a2b820d3bcceeca5e70ea32
