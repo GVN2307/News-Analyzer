@@ -12,6 +12,10 @@
     --font-body: 'Outfit', sans-serif;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-color: var(--bg-dark);
     color: var(--text-white);
@@ -115,10 +119,16 @@ a {
 
 .menu-toggle {
     display: none;
-    font-size: 1.8rem;
+    font-size: 2rem;
+    padding: 0.5rem;
     color: var(--primary);
     cursor: pointer;
     z-index: 1001;
+    transition: transform 0.3s;
+}
+
+.menu-toggle:hover {
+    transform: scale(1.1);
 }
 
 @media(max-width: 768px) {
