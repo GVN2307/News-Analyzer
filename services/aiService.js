@@ -3,7 +3,6 @@ require('dotenv').config();
 
 // Initialize Gemini only if key is present
 const apiKey = process.env.GEMINI_API_KEY;
-console.log("AI Service Init - API Key present:", !!apiKey);
 
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
 const model = genAI ? genAI.getGenerativeModel({ model: "gemini-1.5-flash" }) : null;
