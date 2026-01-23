@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # News Analyzer | AI-Powered Truth Platform
 
 News Analyzer is a comprehensive platform designed to combat misinformation using AI. It features real-time news aggregation from major Indian sources, a decentralized citizen journalism portal, and an advanced AI verification engine.
@@ -25,7 +24,7 @@ News Analyzer is a comprehensive platform designed to combat misinformation usin
 - **Frontend**: HTML5, CSS3 (Advanced Animations, Variables), Vanilla JavaScript.
 - **Backend**: Node.js, Express.js.
 - **Database**: MySQL (for Citizen Reporting).
-- **AI**: OpenAI API (GPT-3.5/4).
+- **AI**: Google Gemini (Vertex AI / Generative AI).
 - **Security**: Helmet, Rate Limiting, CORS.
 
 ## ⚙️ Setup & Installation
@@ -50,14 +49,18 @@ News Analyzer is a comprehensive platform designed to combat misinformation usin
      DB_USER=root
      DB_PASSWORD=your_password
      DB_NAME=news_analyzer
-     OPENAI_API_KEY=sk-... (Your OpenAI Key)
+     GEMINI_API_KEY=AIzaSy... (Your Google API Key)
      ```
+
+### 🧠 Connecting AI Studio (AI Verify)
+To enable the **Neural Verification** feature:
+1. Get a free API Key from [Google AI Studio](https://aistudio.google.com/app/apikey).
+2. Paste it into your `.env` file as `GEMINI_API_KEY`.
+3. Restart the server (`npm start`).
+   > **Note**: If no key is provided, the studio will return mock data/errors.
 
 4. **Run the Application**
    ```bash
    npm start
    # Server runs on http://localhost:3000
    ```
-=======
-# News-Analyzer
->>>>>>> d5a93bf14ffb442c1a2b820d3bcceeca5e70ea32
