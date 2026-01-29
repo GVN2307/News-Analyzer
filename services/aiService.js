@@ -5,62 +5,65 @@ require('dotenv').config();
 const apiKey = process.env.GEMINI_API_KEY;
 
 const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
-const model = genAI ? genAI.getGenerativeModel({ model: "gemini-1.5-flash" }) : null;
+// Use gemini-flash-latest which showed success in previous tests
+const model = genAI ? genAI.getGenerativeModel({ model: "gemini-flash-latest" }) : null;
 
 async function verifyNews(text) {
     if (!model) {
         return {
-            score: 0,
-            analysis: "API Key missing. Please configure GEMINI_API_KEY in .env to get real verification.",
-            is_mock: true
+            truth_probability_score: 0,
+            verdict: "OFFLINE",
+            reasoning: "AI System is not configured. Please check GEMINI_API_KEY in .env.",
+            sources: []
         };
     }
 
     try {
         const prompt = `
-        You are a professional News Verification AI. Your job is to analyze the user's input (a headline or short news text) and determine its likelihood of being true.
-        
-        Analyze for:
-        1. Clickbait linguistic patterns.
-        2. Logical inconsistencies.
-        3. Known misinformation tropes.
-        
-        Return a JSON object strictly in this format (no markdown, no extra text):
+        You are a professional News Verification AI. Analyze the text below.
+        Return a JSON object:
         {
-            "truth_probability_score": (number 0-100),
+            "truth_probability_score": (0-100),
             "verdict": "Likely True" | "Questionable" | "Likely False",
-            "reasoning": "A concise explanation of why...",
-            "sources": ["List of potential sources or 'Unknown'"]
+            "reasoning": "Explanation...",
+            "sources": ["Source A", "Source B"]
         }
-        
-        News to verify: "${text}"
+        Text: "${text}"
         `;
 
         const result = await model.generateContent(prompt);
         const response = await result.response;
         let textOutput = response.text();
 
-        // Clean up markdown if Gemini wraps it in ```json ... ```
+        // Clean up markdown
         textOutput = textOutput.replace(/```json/g, '').replace(/```/g, '').trim();
 
         try {
-            return JSON.parse(textOutput);
+            const parsed = JSON.parse(textOutput);
+            // Ensure all required keys exist
+            return {
+                truth_probability_score: parsed.truth_probability_score ?? 50,
+                verdict: parsed.verdict ?? "UNKNOWN",
+                reasoning: parsed.reasoning ?? "Analysis complete.",
+                sources: parsed.sources ?? []
+            };
         } catch (e) {
-            console.error("JSON Parse Error:", e, "Raw Output:", textOutput);
+            console.error("JSON Parse Error:", e);
             return {
                 truth_probability_score: 50,
-                verdict: "Unsure",
-                reasoning: "AI output could not be parsed. Raw output: " + textOutput.substring(0, 100) + "...",
+                verdict: "UNCERTAIN",
+                reasoning: "AI response format was invalid.",
                 sources: []
             };
         }
 
     } catch (error) {
-        console.error("Gemini AI Error:", error);
+        console.error("Gemini AI Error:", error.message);
         return {
-            score: 0,
-            analysis: "Error communicating with AI service.",
-            error: error.message
+            truth_probability_score: 0,
+            verdict: "SERVICE ERROR",
+            reasoning: "Critical failure in AI engine: " + error.message,
+            sources: []
         };
     }
 }
