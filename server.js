@@ -3,6 +3,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+const xss = require('xss-clean');
 const Parser = require('rss-parser');
 const path = require('path');
 const db = require('./database/db');
@@ -27,7 +29,16 @@ app.use(helmet.contentSecurityPolicy({
 }));
 app.use(compression());
 app.use(cors());
-app.use(express.json());
+
+// Limit Request Body Size (DoS Protection)
+app.use(express.json({ limit: '10kb' }));
+
+// Prevent HTTP Parameter Pollution
+app.use(hpp());
+
+// Data Sanitization against XSS
+app.use(xss());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Root Redirect to Home

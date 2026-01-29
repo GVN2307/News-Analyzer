@@ -1,4 +1,5 @@
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const xss = require("xss");
 require('dotenv').config();
 
 // Initialize Gemini only if key is present
@@ -9,7 +10,10 @@ const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
 const model = genAI ? genAI.getGenerativeModel({ model: "gemini-flash-latest" }) : null;
 
 async function verifyNews(text) {
-    if (!text || text.trim().length < 5) {
+    // Sanitize input to prevent prompt injection / XSS
+    const cleanText = xss(text.substring(0, 1000)); // Limit length and strip scripts
+
+    if (!cleanText || cleanText.trim().length < 5) {
         return {
             truth_probability_score: 0,
             verdict: "INVALID",
@@ -37,7 +41,7 @@ async function verifyNews(text) {
             "reasoning": "Explanation...",
             "sources": ["Source A", "Source B"]
         }
-        Text: "${text}"
+        Text: "${cleanText}"
         `;
 
         const result = await model.generateContent(prompt);

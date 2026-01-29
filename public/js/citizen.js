@@ -7,7 +7,7 @@ async function handleSubmit(e) {
     e.preventDefault();
     const btn = e.target.querySelector('button');
     btn.disabled = true;
-    btn.innerText = "Submitting...";
+    btn.textContent = "Submitting...";
 
     const data = {
         location: document.getElementById('c-location').value,
@@ -35,7 +35,7 @@ async function handleSubmit(e) {
         alert('Failed to connect to server.');
     } finally {
         btn.disabled = false;
-        btn.innerText = "Submit Report";
+        btn.textContent = "Submit Report";
     }
 }
 
@@ -48,16 +48,29 @@ async function loadReports() {
         if (json.success && json.data.length > 0) {
             container.innerHTML = '';
             json.data.forEach(item => {
-                const html = `
-                    <div class="feed-item">
-                        <div class="feed-meta">
-                            <i class="fa-solid fa-map-pin"></i> ${item.location} | <i class="fa-solid fa-user"></i> ${item.reporter_name}
-                        </div>
-                        <h4 class="feed-title">${item.headline}</h4>
-                        <p style="color: #ddd; font-size: 0.95rem;">${item.content}</p>
-                    </div>
-                `;
-                container.innerHTML += html;
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'feed-item';
+
+                const meta = document.createElement('div');
+                meta.className = 'feed-meta';
+                meta.innerHTML = `<i class="fa-solid fa-map-pin"></i> `;
+                const metaText = document.createTextNode(`${item.location} | `);
+                meta.appendChild(metaText);
+                const userIcon = document.createElement('i');
+                userIcon.className = 'fa-solid fa-user';
+                meta.append(userIcon, document.createTextNode(` ${item.reporter_name}`));
+
+                const title = document.createElement('h4');
+                title.className = 'feed-title';
+                title.textContent = item.headline;
+
+                const content = document.createElement('p');
+                content.style.color = '#ddd';
+                content.style.fontSize = '0.95rem';
+                content.textContent = item.content;
+
+                itemDiv.append(meta, title, content);
+                container.appendChild(itemDiv);
             });
         } else {
             container.innerHTML = '<p style="color: var(--text-gray)">No reports yet. Be the first.</p>';
