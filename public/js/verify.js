@@ -68,6 +68,23 @@ function displayResult(data) {
 
     verdictLabel.innerText = data.verdict.toUpperCase();
     reasoning.innerText = data.reasoning || data.analysis;
+
+    // Sources tags
+    const sourcesList = document.getElementById('sources-list');
+    sourcesList.innerHTML = '';
+    if (data.sources && data.sources.length > 0) {
+        data.sources.forEach(src => {
+            const li = document.createElement('li');
+            li.className = 'verdict-badge';
+            li.style.fontSize = '0.75rem';
+            li.style.background = 'rgba(0, 243, 255, 0.1)';
+            li.style.color = 'var(--primary)';
+            li.innerText = src;
+            sourcesList.appendChild(li);
+        });
+    } else {
+        sourcesList.innerHTML = '<li style="color: var(--text-gray); font-size: 0.8rem;">No specific sources cited.</li>';
+    }
 }
 
 function saveToHistory(text, data) {

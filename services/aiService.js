@@ -9,6 +9,15 @@ const genAI = apiKey ? new GoogleGenerativeAI(apiKey) : null;
 const model = genAI ? genAI.getGenerativeModel({ model: "gemini-flash-latest" }) : null;
 
 async function verifyNews(text) {
+    if (!text || text.trim().length < 5) {
+        return {
+            truth_probability_score: 0,
+            verdict: "INVALID",
+            reasoning: "Please provide a more detailed headline or claim for analysis (minimum 5 characters).",
+            sources: []
+        };
+    }
+
     if (!model) {
         return {
             truth_probability_score: 0,
