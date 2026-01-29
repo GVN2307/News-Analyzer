@@ -51,7 +51,16 @@ const apiLimiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 100 // limit each IP to 100 requests per windowMs
 });
+
+// Strict One-per-minute for AI Verify
+const verifyLimiter = rateLimit({
+    windowMs: 60 * 1000, // 1 minute
+    max: 1,
+    message: { success: false, message: "System cooling down. Please wait 60 seconds between analyses." }
+});
+
 app.use('/api/', apiLimiter);
+app.use('/api/verify', verifyLimiter);
 
 // --- Routes ---
 
