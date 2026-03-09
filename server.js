@@ -4,7 +4,6 @@ const helmet = require('helmet');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
-const xss = require('xss-clean');
 const Parser = require('rss-parser');
 const path = require('path');
 const db = require('./database/db');
@@ -36,9 +35,70 @@ app.use(express.json({ limit: '10kb' }));
 // Prevent HTTP Parameter Pollution
 app.use(hpp());
 
-// Data Sanitization against XSS
-app.use(xss());
+// --- Routes (API First) ---
+const { reverseGeocode } = require('./services/locationService');
 
+// 0. Geolocation to City
+app.get('/api/location', async (req, res) => {
+    const { lat, lon } = req.query;
+    if (!lat || !lon) return res.status(400).json({ success: false, message: 'Latitude and Longitude required' });
+
+    const location = await reverseGeocode(lat, lon);
+    if (location) {
+        res.json({ success: true, data: location });
+    } else {
+        res.status(500).json({ success: false, message: 'Could not detect location details' });
+    }
+});
+
+// 1. Live News Aggregator
+app.get('/api/news/live', async (req, res) => {
+    const city = req.query.city;
+    try {
+        const feeds = [
+            { source: 'The Hindu', url: 'https://www.thehindu.com/news/national/feeder/default.rss' },
+            { source: 'Times of India', url: 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms' },
+            { source: 'Hindustan Times', url: 'https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml' }
+        ];
+
+        if (city) {
+            console.log(`Focusing news for: ${city}`);
+        }
+
+        const newsPromises = feeds.map(async (feed) => {
+            try {
+                const parsed = await parser.parseURL(feed.url);
+                return parsed.items.slice(0, 10).map(item => ({
+                    title: item.title,
+                    link: item.link,
+                    pubDate: item.pubDate,
+                    source: feed.source,
+                    snippet: item.contentSnippet || item.content
+                }));
+            } catch (err) {
+                console.error(`Error fetching ${feed.source}:`, err.message);
+                return [];
+            }
+        });
+
+        const results = await Promise.all(newsPromises);
+        let flattened = results.flat().sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
+        if (city) {
+            const cityNews = flattened.filter(item =>
+                item.title.toLowerCase().includes(city.toLowerCase()) ||
+                item.snippet.toLowerCase().includes(city.toLowerCase())
+            );
+            flattened = [...cityNews, ...flattened.filter(item => !cityNews.includes(item))];
+        }
+
+        res.json({ success: true, count: flattened.length, data: flattened });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Failed to fetch news feed' });
+    }
+});
+
+// --- Static Content ---
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Root Redirect to Home
@@ -62,42 +122,6 @@ const verifyLimiter = rateLimit({
 app.use('/api/', apiLimiter);
 app.use('/api/verify', verifyLimiter);
 
-// --- Routes ---
-
-// 1. Live News Aggregator
-app.get('/api/news/live', async (req, res) => {
-    try {
-        const feeds = [
-            { source: 'The Hindu', url: 'https://www.thehindu.com/news/national/feeder/default.rss' },
-            { source: 'Times of India', url: 'https://timesofindia.indiatimes.com/rssfeedstopstories.cms' },
-            { source: 'Hindustan Times', url: 'https://www.hindustantimes.com/feeds/rss/india-news/rssfeed.xml' }
-        ];
-
-        const newsPromises = feeds.map(async (feed) => {
-            try {
-                const parsed = await parser.parseURL(feed.url);
-                // Return top 5 from each
-                return parsed.items.slice(0, 5).map(item => ({
-                    title: item.title,
-                    link: item.link,
-                    pubDate: item.pubDate,
-                    source: feed.source,
-                    snippet: item.contentSnippet || item.content
-                }));
-            } catch (err) {
-                console.error(`Error fetching ${feed.source}:`, err.message);
-                return [];
-            }
-        });
-
-        const results = await Promise.all(newsPromises);
-        const flattened = results.flat().sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-
-        res.json({ success: true, count: flattened.length, data: flattened });
-    } catch (error) {
-        res.status(500).json({ success: false, message: 'Failed to fetch news feed' });
-    }
-});
 
 // 2. Citizen Journalism - Submit
 app.post('/api/news/citizen', async (req, res) => {

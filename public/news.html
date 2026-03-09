@@ -82,6 +82,7 @@
             -webkit-line-clamp: 3;
             -webkit-box-orient: vertical;
             overflow: hidden;
+            line-clamp: 3;
         }
 
         .nc-footer {
@@ -101,13 +102,14 @@
     <nav class="glass-nav" id="main-nav"></nav>
 
     <div class="page-header">
-        <h2 class="page-title">Global Intelligence Stream</h2>
-        <p class="page-subtitle">Real-time aggregated feeds from top-tier verified sources.</p>
+        <h2 class="page-title" data-i18n="live_stream_title">Global Intelligence Stream</h2>
+        <p class="page-subtitle" data-i18n="news_subtitle">Real-time aggregated feeds from top-tier verified sources.
+        </p>
     </div>
 
     <main class="section-container" style="padding: 0 5% 4rem;">
         <div class="controls-bar">
-            <div class="filter-btn active" data-source="all">All Sources</div>
+            <div class="filter-btn active" data-source="all" data-i18n="filter_all">All Sources</div>
             <div class="filter-btn" data-source="The Hindu">The Hindu</div>
             <div class="filter-btn" data-source="Times of India">Times of India</div>
             <div class="filter-btn" data-source="Hindustan Times">Hindustan Times</div>

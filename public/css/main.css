@@ -110,11 +110,55 @@ a {
     border-bottom: 1px solid var(--border);
     position: fixed;
     top: 0;
-    width: 100%;
     z-index: 1000;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
+}
+
+.nav-extras {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-left: auto;
+    margin-right: 2rem;
+}
+
+.location-badge {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-gray);
+    transition: 0.3s;
+}
+
+.location-badge.detected {
+    border-color: var(--primary);
+    color: var(--primary);
+    box-shadow: 0 0 10px var(--primary-dim);
+}
+
+.lang-selector {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: var(--text-white);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    outline: none;
+    font-size: 0.85rem;
+}
+
+.lang-selector:hover {
+    border-color: var(--primary);
+}
+
+.lang-selector option {
+    background: #111;
+    color: #fff;
 }
 
 .menu-toggle {

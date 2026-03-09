@@ -1,6 +1,34 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadHistory();
     document.getElementById('analyze-btn').addEventListener('click', runAnalysis);
+
+    // Voice Input Initialization
+    const micBtn = document.getElementById('mic-btn');
+    if (micBtn) {
+        micBtn.addEventListener('click', () => {
+            if (micBtn.classList.contains('listening')) {
+                accessibility.stopListening();
+                micBtn.classList.remove('listening');
+            } else {
+                micBtn.classList.add('listening');
+                accessibility.startListening((text) => {
+                    document.getElementById('text-input').value = text;
+                    micBtn.classList.remove('listening');
+                }, (err) => {
+                    micBtn.classList.remove('listening');
+                    alert("Speech Error: " + err);
+                });
+            }
+        });
+    }
+
+    // Voice Output Initialization
+    document.getElementById('speak-result-btn')?.addEventListener('click', () => {
+        const verdict = document.getElementById('verdict-label').innerText;
+        const reasoning = document.getElementById('reasoning-text').innerText;
+        const fullText = `Verdict is ${verdict}. Analysis: ${reasoning}`;
+        accessibility.speak(fullText);
+    });
 });
 
 async function runAnalysis() {

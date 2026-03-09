@@ -1,6 +1,35 @@
 document.addEventListener('DOMContentLoaded', () => {
     loadReports();
     document.getElementById('citizen-form').addEventListener('submit', handleSubmit);
+
+    // Auto-fill location if available
+    const savedCity = localStorage.getItem('user-city');
+    if (savedCity) document.getElementById('c-location').value = savedCity;
+
+    window.addEventListener('location-updated', (e) => {
+        document.getElementById('c-location').value = e.detail;
+    });
+
+    // Voice Input for Content
+    const micBtn = document.getElementById('mic-btn-citizen');
+    if (micBtn) {
+        micBtn.addEventListener('click', () => {
+            if (micBtn.classList.contains('listening')) {
+                accessibility.stopListening();
+                micBtn.classList.remove('listening');
+            } else {
+                micBtn.classList.add('listening');
+                accessibility.startListening((text) => {
+                    const contentArea = document.getElementById('c-content');
+                    contentArea.value = contentArea.value ? contentArea.value + " " + text : text;
+                    micBtn.classList.remove('listening');
+                }, (err) => {
+                    micBtn.classList.remove('listening');
+                    console.error("Speech Error:", err);
+                });
+            }
+        });
+    }
 });
 
 async function handleSubmit(e) {

@@ -88,46 +88,99 @@
     <nav class="glass-nav" id="main-nav"></nav>
 
     <div class="page-header">
-        <h2 class="page-title">Citizen Network</h2>
-        <p class="page-subtitle">Decentralized reporting. Be the eyes and ears on the ground.</p>
+        <h2 class="page-title" data-i18n="citizen_title">Citizen Network</h2>
+        <p class="page-subtitle" data-i18n="citizen_subtitle">Decentralized reporting. Be the eyes and ears on the
+            ground.</p>
     </div>
 
     <main class="portal-grid">
         <section>
             <div class="report-form-card">
-                <h3 style="margin-bottom: 1.5rem; font-family: var(--font-head);">Submit Report</h3>
+                <h3 style="margin-bottom: 1.5rem; font-family: var(--font-head);" data-i18n="label_submit_report">Submit
+                    Report</h3>
                 <form id="citizen-form">
                     <div class="form-group">
-                        <label>Location</label>
-                        <input type="text" id="c-location" class="form-control" placeholder="City, Area" required>
+                        <label data-i18n="label_location">Location</label>
+                        <input type="text" id="c-location" class="form-control" placeholder="City, Area"
+                            data-i18n="ph_location" required>
                     </div>
                     <div class="form-group">
-                        <label>Headline</label>
-                        <input type="text" id="c-headline" class="form-control" placeholder="What happened?" required>
+                        <label data-i18n="label_headline">Headline</label>
+                        <input type="text" id="c-headline" class="form-control" placeholder="What happened?"
+                            data-i18n="ph_headline" required>
                     </div>
-                    <div class="form-group">
-                        <label>Details</label>
+                    <div class="form-group" style="position: relative;">
+                        <label data-i18n="label_content">Details</label>
                         <textarea id="c-content" class="form-control" rows="5" placeholder="Describe the event..."
-                            required></textarea>
+                            data-i18n="ph_details" required></textarea>
+                        <button type="button" id="mic-btn-citizen" class="mic-btn-mini" title="Voice Input">
+                            <i class="fa-solid fa-microphone"></i>
+                        </button>
                     </div>
                     <div class="form-group">
-                        <label>Reporter Name (Optional)</label>
-                        <input type="text" id="c-name" class="form-control" placeholder="Anonymous">
+                        <label data-i18n="label_name">Reporter Name (Optional)</label>
+                        <input type="text" id="c-name" class="form-control" placeholder="Anonymous" data-i18n="ph_name">
                     </div>
-                    <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Report</button>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;"
+                        data-i18n="btn_submit_report">Submit Report</button>
                 </form>
             </div>
         </section>
 
         <section>
-            <h3 style="margin-bottom: 1.5rem; font-family: var(--font-head);">Live Local Reports</h3>
+            <h3 style="margin-bottom: 1.5rem; font-family: var(--font-head);" data-i18n="recent_reports_title">Live
+                Local Reports</h3>
             <div id="citizen-feed" class="feed-container">
                 <div class="loader"></div>
             </div>
         </section>
     </main>
 
+    <style>
+        .mic-btn-mini {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            background: var(--secondary);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+
+        .mic-btn-mini:hover {
+            transform: scale(1.1);
+        }
+
+        .mic-btn-mini.listening {
+            background: var(--accent);
+            animation: pulse-red 1.5s infinite;
+        }
+
+        @keyframes pulse-red {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 60, 0.7);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 0, 60, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 0, 60, 0);
+            }
+        }
+    </style>
+
     <script src="js/common.js"></script>
+    <script src="js/accessibility.js"></script>
     <script src="js/citizen.js"></script>
 </body>
 

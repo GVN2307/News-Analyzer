@@ -126,20 +126,24 @@
     <nav class="glass-nav" id="main-nav"></nav>
 
     <div class="page-header">
-        <h2 class="page-title">Verification Studio</h2>
-        <p class="page-subtitle">Paste a headline, tweet, or article snippet. Our NLP Engine determines its credibility.
-        </p>
+        <h2 class="page-title" data-i18n="verify_title">Verification Studio</h2>
+        <p class="page-subtitle" data-i18n="verify_subtitle">Paste a headline, tweet, or article snippet. Our NLP Engine determines its credibility.</p>
     </div>
 
     <main class="studio-layout">
         <section class="studio-main">
             <div class="analysis-box">
-                <textarea id="text-input" class="verify-input"
-                    placeholder="Enter text to analyze... (e.g. 'Government announces new tax on breathable air starting 2026')"></textarea>
+                <div style="position: relative;">
+                    <textarea id="text-input" class="verify-input" data-i18n="verify_placeholder"
+                        placeholder="Enter text to analyze..."></textarea>
+                    <button id="mic-btn" class="mic-btn" title="Voice Input">
+                        <i class="fa-solid fa-microphone"></i>
+                    </button>
+                </div>
                 <div style="margin-top: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
-                    <div id="status-msg" style="color: var(--text-gray); font-size: 0.9rem;">Ready for input</div>
+                    <div id="status-msg" style="color: var(--text-gray); font-size: 0.9rem;" data-i18n="verify_status_ready">Ready for input</div>
                     <button class="btn btn-primary btn-glow" id="analyze-btn">
-                        <i class="fa-solid fa-bolt"></i> Analyze Now
+                        <i class="fa-solid fa-bolt"></i> <span data-i18n="btn_verify">Analyze Now</span>
                     </button>
                 </div>
             </div>
@@ -147,21 +151,23 @@
             <div id="result-area" class="result-stage">
                 <div class="score-display">
                     <div class="ring-wrapper">
-                        <!-- Canvas or SVG ring here if needed, keeping simple text for now -->
                         <span id="score-val" class="big-score">0%</span>
                     </div>
                     <div>
                         <div id="verdict-label" class="verdict-badge">UNCERTAIN</div>
-                        <p style="margin-top: 0.5rem; color: var(--text-gray);">Truth Probability Score</p>
+                        <p style="margin-top: 0.5rem; color: var(--text-gray);" data-i18n="label_truth_score">Truth Probability Score</p>
                     </div>
+                    <button id="speak-result-btn" class="speak-btn" title="Hear Verdict">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
                 </div>
                 <div class="analysis-content">
                     <h3 style="margin-bottom: 0.5rem;"><i class="fa-solid fa-microchip"
-                            style="color:var(--primary)"></i> AI Reasoning</h3>
+                            style="color:var(--primary)"></i> <span data-i18n="label_ai_reasoning">AI Reasoning</span></h3>
                     <p id="reasoning-text" style="line-height: 1.8; color: #ddd; margin-bottom: 2rem;"></p>
 
                     <h3 style="margin-bottom: 0.5rem;"><i class="fa-solid fa-link" style="color:var(--primary)"></i>
-                        Sources & Evidence</h3>
+                        <span data-i18n="label_sources">Sources & Evidence</span></h3>
                     <ul id="sources-list"
                         style="list-style: none; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem;"></ul>
                 </div>
@@ -169,14 +175,62 @@
         </section>
 
         <aside class="studio-history">
-            <h3 style="margin-bottom: 1.5rem; font-family: var(--font-head);">Recent Checks</h3>
+            <h3 style="margin-bottom: 1.5rem; font-family: var(--font-head);" data-i18n="recent_checks_title">Recent Checks</h3>
             <div id="history-list">
-                <p style="color: var(--text-gray); font-size: 0.9rem;">No history yet.</p>
+                <p style="color: var(--text-gray); font-size: 0.9rem;" data-i18n="history_empty">No history yet.</p>
             </div>
         </aside>
     </main>
 
+    <!-- Specific Styles for verify page voice icons -->
+    <style>
+        .mic-btn {
+            position: absolute;
+            right: 15px;
+            bottom: 15px;
+            background: var(--secondary);
+            border: none;
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: 0.3s;
+        }
+        .mic-btn:hover { transform: scale(1.1); box-shadow: 0 0 15px var(--secondary); }
+        .mic-btn.listening { background: var(--accent); animation: pulse-red 1.5s infinite; }
+        
+        .speak-btn {
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            transition: 0.3s;
+        }
+        .speak-btn:hover { background: var(--primary); color: black; box-shadow: 0 0 15px var(--primary); }
+
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(255, 0, 60, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(255, 0, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 0, 60, 0); }
+        }
+    </style>
+
     <script src="js/common.js"></script>
+    <script src="js/accessibility.js"></script>
     <script src="js/verify.js"></script>
 </body>
 

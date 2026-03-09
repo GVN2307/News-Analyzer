@@ -9,14 +9,21 @@ document.addEventListener('DOMContentLoaded', () => {
             filterNews(e.target.getAttribute('data-source'));
         });
     });
+
+    window.addEventListener('location-updated', (e) => {
+        loadNews();
+    });
 });
 
 let allNewsData = [];
 
 async function loadNews() {
     const container = document.getElementById('news-container');
+    const city = localStorage.getItem('user-city');
+    const url = city ? `/api/news/live?city=${encodeURIComponent(city)}` : '/api/news/live';
+
     try {
-        const res = await fetch('/api/news/live');
+        const res = await fetch(url);
         const json = await res.json();
 
         if (json.success) {

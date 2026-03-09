@@ -31,53 +31,66 @@ async function verifyNews(text) {
         };
     }
 
-    try {
-        const prompt = `
-        You are a professional News Verification AI. Analyze the text below.
-        Return a JSON object:
-        {
-            "truth_probability_score": (0-100),
-            "verdict": "Likely True" | "Questionable" | "Likely False",
-            "reasoning": "Explanation...",
-            "sources": ["Source A", "Source B"]
-        }
-        Text: "${cleanText}"
-        `;
+    let retryCount = 0;
+    const maxRetries = 2;
 
-        const result = await model.generateContent(prompt);
-        const response = await result.response;
-        let textOutput = response.text();
-
-        // Clean up markdown
-        textOutput = textOutput.replace(/```json/g, '').replace(/```/g, '').trim();
-
+    while (retryCount <= maxRetries) {
         try {
-            const parsed = JSON.parse(textOutput);
-            // Ensure all required keys exist
+            const prompt = `
+            You are a professional News Verification AI. Analyze the text below.
+            Return a JSON object:
+            {
+                "truth_probability_score": (0-100),
+                "verdict": "Likely True" | "Questionable" | "Likely False",
+                "reasoning": "Explanation...",
+                "sources": ["Source A", "Source B"]
+            }
+            Text: "${cleanText}"
+            `;
+
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            let textOutput = response.text();
+
+            // Clean up markdown
+            textOutput = textOutput.replace(/```json/g, '').replace(/```/g, '').trim();
+
+            try {
+                const parsed = JSON.parse(textOutput);
+                return {
+                    truth_probability_score: parsed.truth_probability_score ?? 50,
+                    verdict: parsed.verdict ?? "UNKNOWN",
+                    reasoning: parsed.reasoning ?? "Analysis complete.",
+                    sources: parsed.sources ?? []
+                };
+            } catch (e) {
+                console.error("JSON Parse Error:", e);
+                return {
+                    truth_probability_score: 50,
+                    verdict: "UNCERTAIN",
+                    reasoning: "AI response format was invalid.",
+                    sources: []
+                };
+            }
+
+        } catch (error) {
+            console.error(`Gemini AI Error (Attempt ${retryCount + 1}):`, error.message);
+
+            // If it's a 503 or overload, retry after a short delay
+            if ((error.message.includes('503') || error.message.includes('500') || error.message.includes('high demand')) && retryCount < maxRetries) {
+                retryCount++;
+                console.log(`Retrying in 2 seconds...`);
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                continue;
+            }
+
             return {
-                truth_probability_score: parsed.truth_probability_score ?? 50,
-                verdict: parsed.verdict ?? "UNKNOWN",
-                reasoning: parsed.reasoning ?? "Analysis complete.",
-                sources: parsed.sources ?? []
-            };
-        } catch (e) {
-            console.error("JSON Parse Error:", e);
-            return {
-                truth_probability_score: 50,
-                verdict: "UNCERTAIN",
-                reasoning: "AI response format was invalid.",
-                sources: []
+                truth_probability_score: 0,
+                verdict: "SERVICE BUSY",
+                reasoning: "The AI engine is currently under high demand. Please try again in 30 seconds.",
+                sources: ["System Alert: Service Overloaded"]
             };
         }
-
-    } catch (error) {
-        console.error("Gemini AI Error:", error.message);
-        return {
-            truth_probability_score: 0,
-            verdict: "SERVICE ERROR",
-            reasoning: "Critical failure in AI engine: " + error.message,
-            sources: []
-        };
     }
 }
 
