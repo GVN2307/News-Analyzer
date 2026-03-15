@@ -1,0 +1,17 @@
+# These owners will be the default owners for everything in the repo.
+*       @GVN2307
+
+# Order is important; the last matching pattern takes the most precedence.
+
+# Build files and node_modules (though node_modules should be ignored)
+/package.json @GVN2307
+
+# Documentation
+/*.md   @GVN2307
+
+# Backend logic
+/server.js @GVN2307
+/services/ @GVN2307
+
+# Frontend
+/public/ @GVN2307
